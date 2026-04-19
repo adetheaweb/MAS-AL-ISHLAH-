@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Menu, X, Phone, Mail, MapPin } from "lucide-react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { NAVIGATION } from "../constants";
 import { useApp } from "../context/AppContext";
 
@@ -8,6 +9,51 @@ export default function Header() {
   const { schoolInfo } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavItemClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setIsOpen(false);
+
+    if (href === "/") {
+      if (location.pathname === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        navigate("/");
+      }
+      return;
+    }
+
+    if (href.startsWith("/#")) {
+      const targetId = href.split("#")[1];
+      if (location.pathname === "/") {
+        const element = document.getElementById(targetId);
+        if (element) {
+          const offset = 80; // Header height
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = element.getBoundingClientRect().top;
+          const elementPosition = elementRect - bodyRect;
+          const offsetPosition = elementPosition - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+      } else {
+        navigate("/");
+        // After navigation, we need to scroll. 
+        // We can use a small delay or check in useEffect on Home.
+        setTimeout(() => {
+          const element = document.getElementById(targetId);
+          if (element) {
+            window.scrollTo({ top: element.offsetTop - 80, behavior: "smooth" });
+          }
+        }, 100);
+      }
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,6 +113,7 @@ export default function Header() {
               <motion.a
                 key={item.label}
                 href={item.href}
+                onClick={(e) => handleNavItemClick(e, item.href)}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
@@ -98,7 +145,7 @@ export default function Header() {
             <a
               key={item.label}
               href={item.href}
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => handleNavItemClick(e, item.href)}
               className="text-gray-800 text-lg font-medium border-b border-gray-50 pb-2"
             >
               {item.label}
