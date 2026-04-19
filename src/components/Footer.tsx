@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { NAVIGATION } from "../constants";
 import { useApp } from "../context/AppContext";
 
@@ -51,7 +52,7 @@ export default function Footer() {
               <li><a href="#" className="text-gray-500 hover:text-brand-gold transition-colors text-sm">Kesiswaan</a></li>
               <li><a href="#" className="text-gray-500 hover:text-brand-gold transition-colors text-sm">Kurikulum</a></li>
               <li><a href="#" className="text-gray-500 hover:text-brand-gold transition-colors text-sm">Fasilitas</a></li>
-              <li><a href="/admin" className="text-brand-gold hover:underline transition-colors text-sm font-bold flex items-center gap-2">Panel Admin</a></li>
+              <li><Link to="/admin" className="text-brand-gold hover:underline transition-colors text-sm font-bold flex items-center gap-2">Panel Admin</Link></li>
             </ul>
           </div>
 
