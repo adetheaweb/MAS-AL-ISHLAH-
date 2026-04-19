@@ -39,11 +39,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [sliders, setSliders] = useState<Slider[]>(() => {
-    const saved = localStorage.getItem("app_sliders");
-    return saved ? JSON.parse(saved) : [
-      { id: 1, title: "Selamat Datang di MAS AL-ISHLAH", subtitle: "Mewujudkan Generasi Islami, Cerdas, dan Berakhlak Mulia", image: "https://picsum.photos/seed/school1/1920/1080" },
-      { id: 2, title: "Pendaftaran Siswa Baru", subtitle: "Tahun Ajaran 2024/2025 Telah Dibuka. Bergabunglah Bersama Kami!", image: "https://picsum.photos/seed/school2/1920/1080" },
-    ];
+    const saved = localStorage.getItem("app_sliders_v2");
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [newsList, setNewsList] = useState<typeof NEWS>(() => {
@@ -73,7 +70,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [galleryImages]);
 
   useEffect(() => {
-    localStorage.setItem("app_sliders", JSON.stringify(sliders));
+    localStorage.setItem("app_sliders_v2", JSON.stringify(sliders));
   }, [sliders]);
 
   useEffect(() => {
